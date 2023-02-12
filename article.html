@@ -28,7 +28,7 @@
                 <div class="container">
                     <el-row :gutter="20">
                       <el-col :span="18">
-                        <div class="main" v-html="article"></div>
+                        <div class="main" v-loading="loading" v-html="article"></div>
                       </el-col>
                       <el-col :span="6">
                         <div class="main">
@@ -69,7 +69,8 @@
           activeIndex: '1',
           id: '',
           cate: '',
-          article: ''
+          article: '',
+          loading: true
         }
       },
       methods: {
@@ -79,6 +80,7 @@
         getData() {
           http.get(`/src/articles/${this.cate}/${this.id}.md`).then(res => {
             this.article = marked.parse(res.data);
+            this.loading = false
           }).catch(err => {
 
           })

@@ -39,8 +39,9 @@
             <div class="container">
                 <el-row :gutter="20">
                   <el-col :span="18">
-                    <div class="main">
-                        <a :href="`article.html?id=${item.id}&cate=${item.cate}`" style="color: #fff; display: block; background-color: #1d1d1d; margin-bottom: 20px; padding: 20px; border-radius: 6px;" v-for="(item, index) in list" ::key="index">
+                    <div class="main" v-loading="mainLoading">
+                        <a v-if="list.length > 0" :href="`article.html?id=${item.id}&cate=${item.cate}`" 
+                        style="color: #fff; display: block; background-color: #1d1d1d; margin-bottom: 20px; padding: 20px; border-radius: 6px;" v-for="(item, index) in list" ::key="index">
                           <h4>{{item.title}}</h4>
                           <div style="margin-top: 5px;">
                             这里是摘要
@@ -90,7 +91,8 @@
           count: 0,
           list: [],
           page: 1,
-          cate: ''
+          cate: '',
+          mainLoading: true
         }
       },
       methods: {
@@ -99,6 +101,7 @@
         },
         getData() {
           http.get('/src/data/article_index.json').then(res => {
+            this.mainLoading = false
             this.list = res.data
           }).catch(err => {
 
