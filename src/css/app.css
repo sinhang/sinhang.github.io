@@ -18,7 +18,14 @@ html, body {
     background-color: #141414;
     color: #fff;
     /* text-align: center; */
+}
+
+.el-header {
     line-height: 60px;
+}
+
+.el-footer {
+    padding: 10px 0;
 }
 
 .el-menu.el-menu--horizontal {
@@ -34,4 +41,8 @@ html, body {
 
 .text-center {
     text-align: center;
+}
+
+a, a:visited, a:hover, a:active {
+    text-decoration: none !important;
 }

@@ -12,7 +12,7 @@
     <el-container>
         <el-header>
             <div class="container">
-                <el-menu background-color="#141414" text-color="#fff" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+                <el-menu background-color="#141414" active-text-color="#fff" text-color="#fff" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                     <el-menu-item index="1">Home</el-menu-item>
                     <el-menu-item index="2">PHP</el-menu-item>
                     <el-menu-item index="3">Golang</el-menu-item>
@@ -40,7 +40,12 @@
                 <el-row :gutter="20">
                   <el-col :span="18">
                     <div class="main">
-                        132
+                        <a :href="`article.html?id=${item.id}&cate=${item.cate}`" style="color: #fff; display: block; background-color: #1d1d1d; margin-bottom: 20px; padding: 20px; border-radius: 6px;" v-for="(item, index) in list" ::key="index">
+                          <h4>{{item.title}}</h4>
+                          <div style="margin-top: 5px;">
+                            这里是摘要
+                          </div>
+                        </a>
                     </div>
                   </el-col>
                   <el-col :span="6">
@@ -52,8 +57,17 @@
             </div>
         </el-main>
         <el-footer>
-            <div class="container text-center">
-                footer
+            <div class="container text-center" style="padding: 10px">
+                <a href="https://github.com/sinhang" target="_blank">
+                  <el-image
+                  style="width: 40px; height: 40px; margin-right: 10px;"
+                  src="/src/images/github.png"></el-image>
+                </a>
+                <a href="mailto:mercury@jozhi.com.cn">
+                  <el-image
+                  style="width: 40px; height: 40px; margin-left: 10px;"
+                  src="/src/images/mail.png"></el-image>
+                </a>
             </div>
         </el-footer>
       </el-container>
@@ -65,12 +79,40 @@
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  <script src="src/js/http.js"></script>
   <script>
     new Vue({
       el: '#app',
       data: function() {
-        return { visible: false }
-      }
+        return { 
+          visible: false,
+          activeIndex: '1',
+          count: 0,
+          list: [],
+          page: 1,
+          cate: ''
+        }
+      },
+      methods: {
+        handleSelect(val) {
+          
+        },
+        getData() {
+          http.get('/src/data/article_index.json').then(res => {
+            this.list = res.data
+          }).catch(err => {
+
+          })
+        }
+      },
+      created () {
+        // http.get('/src/data/container.json').then((result) => {
+          
+        // }).catch((err) => {
+          
+        // });
+        this.getData()
+      },
     })
   </script>
 </html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="src/css/app.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+    <div id="app">
+        <el-container>
+            <el-header>
+                <div class="container">
+                    <el-menu background-color="#141414" active-text-color="#fff" text-color="#fff" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+                        <el-menu-item index="1">Home</el-menu-item>
+                        <el-menu-item index="2">PHP</el-menu-item>
+                        <el-menu-item index="3">Golang</el-menu-item>
+                        <el-menu-item index="4">Mysql</el-menu-item>
+                        <el-menu-item index="5">Elastic Search</el-menu-item>
+                    </el-menu>
+                </div>
+            </el-header>
+            <el-main>
+                <div class="container">
+                    <el-row :gutter="20">
+                      <el-col :span="18">
+                        <div class="main" id="content">
+                            
+                        </div>
+                      </el-col>
+                      <el-col :span="6">
+                        <div class="main">
+    
+                        </div>
+                      </el-col>
+                    </el-row>
+                </div>
+            </el-main>
+            <el-footer>
+                <div class="container text-center">
+                    footer
+                </div>
+            </el-footer>
+          </el-container>
+      </div>
+</body>
+<script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  <script src="src/js/http.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return { 
+          activeIndex: '1',
+          id: '',
+          cate: '',
+          article: ''
+        }
+      },
+      methods: {
+        handleSelect(val) {
+          
+        },
+        getData() {
+          http.get(`/src/articles/${this.cate}/${this.id}.md`).then(res => {
+            this.article = res.data
+            document.getElementById('content').innerHTML = marked.parse(res.data);
+          }).catch(err => {
+
+          })
+        },
+        getQuery() {
+            let query = window.location.search.substring(1)
+            if (!query) {
+                //  这里没有参数
+            }
+            let params = query.split("&")
+            for (let i in params) {
+                let param = params[i].split('=')
+                
+                for (let p = 0; p < 2; p++) {
+                    switch (param[0]) {
+                        case 'cate':
+                            this.cate = param[1]
+                            break;
+                        case 'id':
+                            this.id = param[1]
+                            break
+                    }
+                }
+                
+            }
+        }
+      },
+      created () {
+        this.getQuery()
+        this.getData()
+      },
+    })
+  </script>
+</html>
