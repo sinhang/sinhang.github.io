@@ -28,9 +28,7 @@
                 <div class="container">
                     <el-row :gutter="20">
                       <el-col :span="18">
-                        <div class="main" id="content">
-                            
-                        </div>
+                        <div class="main" v-html="article"></div>
                       </el-col>
                       <el-col :span="6">
                         <div class="main">
@@ -41,8 +39,17 @@
                 </div>
             </el-main>
             <el-footer>
-                <div class="container text-center">
-                    footer
+                <div class="container text-center" style="padding: 10px">
+                    <a href="https://github.com/sinhang" target="_blank">
+                      <el-image
+                      style="width: 40px; height: 40px; margin-right: 10px;"
+                      src="/src/images/github.png"></el-image>
+                    </a>
+                    <a href="mailto:mercury@jozhi.com.cn">
+                      <el-image
+                      style="width: 40px; height: 40px; margin-left: 10px;"
+                      src="/src/images/mail.png"></el-image>
+                    </a>
                 </div>
             </el-footer>
           </el-container>
@@ -71,8 +78,7 @@
         },
         getData() {
           http.get(`/src/articles/${this.cate}/${this.id}.md`).then(res => {
-            this.article = res.data
-            document.getElementById('content').innerHTML = marked.parse(res.data);
+            this.article = marked.parse(res.data);
           }).catch(err => {
 
           })
